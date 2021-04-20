@@ -1,0 +1,1 @@
+Example application for a simple YouTube App using Google Developers YouTube Data API ([developers.google.com/youtube/v3](https://developers.google.com/youtube/v3)). The application is implemented in React JS / TypeScript and uses Hooks.
