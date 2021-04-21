@@ -1,29 +1,51 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../App'
+import SearchResult from '../components/SearchResult'
 import Header from '../components/Header'
+import IVideoItem from '../app/definitions/IVideoItem'
 
-test('Renders for header, video-section and search-result element', () => {
-  const { getByTestId } = render(<App />)
-  const headerElement = getByTestId('header')
+test('Renders for existing header, video-section and search-result element', () => {
+  render(<App />)
+  const headerElement = screen.getByTestId('header')
   expect(headerElement).toBeInTheDocument()
 
-  const videoElement = getByTestId('video-section')
+  const videoElement = screen.getByTestId('video-section')
   expect(videoElement).toBeInTheDocument()
 
-  const searchResultElement = getByTestId('search-result')
+  const searchResultElement = screen.getByTestId('search-result')
   expect(searchResultElement).toBeInTheDocument()
 })
 
-test('Renders for text-input change event', () => { 
-  const onChange = jest.fn()
-  const onKeyPress = jest.fn()
+test('Renders for testing text-input element', () => { 
+  render(<Header inputKeyPress={() => {}} />)
 
-  const { getByTestId } = render(<Header inputText="" onChange={onChange} onKeyPress={onKeyPress} />)
-  const inputField = getByTestId('q-input')
+  const inputField = screen.getByTestId('q-input')
   const inputText = 'test-input-text'
-
-  expect(inputField).toBeInTheDocument()
   userEvent.type( inputField, inputText )
-  expect(onChange).toHaveBeenCalledTimes(inputText.length)
+  expect(inputField).toHaveValue(inputText)
+})
+
+test('Renders for existing PriviewBox elements', () => { 
+  const videoItems: Array<IVideoItem> = [
+    {
+      thumb: "1.jpg",
+      title: "Title 1",
+      description: "Description 1",
+      id: "Id1",
+    },
+    {
+      thumb: "2.jpg",
+      title: "Title 2",
+      description: "Description 2",
+      id: "Id1",
+    }
+  ]
+
+  render(<SearchResult videoItems={videoItems} setVideoId={() => {}} />)
+
+  expect(screen.getByText(/Title 1/)).toBeInTheDocument();
+  expect(screen.getByText(/Description 1/)).toBeInTheDocument();
+  expect(screen.getByText(/Title 2/)).toBeInTheDocument();
+  expect(screen.getByText(/Description 2/)).toBeInTheDocument();
 })
