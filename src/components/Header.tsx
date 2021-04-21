@@ -1,16 +1,22 @@
-import { KeyboardEvent, ChangeEvent } from 'react'
+import { useState, KeyboardEvent } from 'react'
 
 interface IHeaderProps {
-  inputText:string,
-  onChange: (ev:ChangeEvent<HTMLInputElement>) => void,
-  onKeyPress: (ev:KeyboardEvent) => void,
+  inputKeyPress: (s: string) => void,
 }
 
-function Header({ inputText, onChange, onKeyPress }: IHeaderProps) {
+function Header({ inputKeyPress }: IHeaderProps) {
+  const [inputText, setInputText] = useState('')
+
+  const onKeyPress = (ev:KeyboardEvent) => {
+    if( ev.key === "Enter") {
+      inputKeyPress(inputText)
+    }
+  }
+
   return (
     <header data-testid="header">
       <img src="./images/logo.png" alt="" className="logo" />
-      <input type="text" className="text-input" value={inputText} onChange={onChange} onKeyPress={onKeyPress} data-testid="q-input" />
+      <input type="text" className="text-input" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyPress={onKeyPress} data-testid="q-input" />
     </header>
   )
 }
