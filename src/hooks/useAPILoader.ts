@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import IVideoItem from '../app/definitions/IVideoItem'
+import { API_KEY } from '../app/ApiKey'
 import axios from 'axios'
 
 export interface ILoaderResult {
@@ -19,7 +20,7 @@ const useAPILoader = (qText:string, rMax:number): ILoaderResult => {
 
     const loadData = async () => {
       const options = {
-        key: '', // You need to get your own YouTube API key
+        key: API_KEY,
         part: 'snippet',
         maxResults: 20,
         type: 'video',
@@ -37,7 +38,7 @@ const useAPILoader = (qText:string, rMax:number): ILoaderResult => {
       })
     }
 
-    loadData()
+    if(API_KEY) loadData()
 
   }, [searchText, maxResults])
   
